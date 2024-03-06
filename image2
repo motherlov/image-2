@@ -1,0 +1,25 @@
+import React, { useState } from 'react';
+
+function FileUpload() {
+  const [image, setImage] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      {image && <img src={image} alt="Uploaded" style={{ maxWidth: '100px', maxHeight: '100px' }} />}
+    </div>
+  );
+}
+
+export default FileUpload;
