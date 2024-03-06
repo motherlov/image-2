@@ -1,0 +1,60 @@
+import React, { useState } from 'react';
+
+const ImageDropZone = () => {
+  const [images, setImages] = useState([]);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setImages((prevImages) => [...prevImages, reader.result]);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      style={{
+        width: '300px',
+        minHeight: '300px',
+        border: '2px dashed #ccc',
+        borderRadius: '5px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+      }}
+    >
+      {images.length > 0 ? (
+        <div>
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Dropped ${index}`}
+              style={{ maxWidth: '100%', maxHeight: '100%', marginBottom: '10px' }}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>Drag and drop images here</p>
+      )}
+    </div>
+  );
+};
+
+export default ImageDropZone;
